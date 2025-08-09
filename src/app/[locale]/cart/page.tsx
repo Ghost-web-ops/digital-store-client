@@ -6,11 +6,13 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { loadStripe } from '@stripe/stripe-js';
+import { useI18n } from '../../../locales/client';
 
 // تهيئة Stripe (ضع المفتاح العام هنا من ملف .env.local)
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
 export default function CartPage() {
+  const t = useI18n();
   const { items, removeFromCart } = useCartStore();
 
   const totalPrice = items.reduce((total, item) => {
@@ -50,13 +52,13 @@ export default function CartPage() {
 
   return (
     <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Your Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">{t('CartPage.title')}</h1>
 
       {items.length === 0 ? (
         <div className="text-center">
-          <p className="text-muted-foreground mb-4">Your cart is empty.</p>
+          <p className="text-muted-foreground mb-4">{t('CartPage.emptyMessage')}</p>
           <Button asChild>
-            <Link href="/">Continue Shopping</Link>
+            <Link href="/">{t('CartPage.continueShopping')}</Link>
           </Button>
         </div>
       ) : (

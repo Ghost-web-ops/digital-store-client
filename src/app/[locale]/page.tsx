@@ -13,7 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart.store"; // <-- الخطوة 2: استدعاء "دماغ" السلة
 import toast from "react-hot-toast"; // (اختياري: لإظهار إشعارات جميلة)
-import { useI18n } from "../../locales/client"; // <-- استدعاء الترجمة
+import { useI18n } from '../../locales/client'
+
+
 // تعريف شكل بيانات المنتج
 interface Product {
   id: number;
@@ -24,10 +26,10 @@ interface Product {
 }
 
 export default function HomePage() {
-  const t = useI18n(); // <-- استخدام الترجمة
+ // <-- استخدام الترجمة
+ const t = useI18n()
   const [products, setProducts] = useState<Product[]>([]);
   const { addToCart } = useCartStore(); // <-- الوصول لدالة الإضافة للسلة
-
   useEffect(() => {
     // دالة لجلب المنتجات من الـ API الخاص بنا
     async function getProducts() {
@@ -50,7 +52,7 @@ export default function HomePage() {
 
   return (
     <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center"> {t('HomePage.title')}</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">{t('home.title')} </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (

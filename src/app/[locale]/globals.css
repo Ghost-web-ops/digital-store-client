@@ -120,3 +120,17 @@
     @apply bg-background text-foreground;
   }
 }
+/* styles/globals.css */
+:root {
+  font-family: system-ui, sans-serif;
+}
+
+[dir="rtl"] {
+  font-family: system-ui, -apple-system, sans-serif;
+  text-align: right;
+}
+
+[dir="ltr"] {
+  font-family: system-ui, sans-serif;
+  text-align: left;
+}
