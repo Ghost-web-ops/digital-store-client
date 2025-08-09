@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useI18n } from '../../../locales/client';
 
 // تعريف شكل البيانات للطلبات والمنتجات
 interface Product {
@@ -26,6 +27,7 @@ interface Order {
 }
 
 export default function AccountPage() {
+  const t = useI18n();
   const { token, isLoggedIn, logout } = useAuth();
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -61,44 +63,44 @@ export default function AccountPage() {
   }, [isLoggedIn, token, router, logout]);
 
   if (isLoading) {
-    return <div className="text-center p-10">Loading your orders...</div>;
+    return <div className="text-center p-10">{t('OrderDetails.loading')}</div>;
   }
 
   return (
-    <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8">My Account</h1>
-      <h2 className="text-2xl font-semibold mb-4">Order History</h2>
+    <main className="container mx-auto p-4 flex flex-col items-center">
+      <h1 className="text-3xl font-bold mb-8">{t('AccountPage.title')}</h1>
+      <h2 className="text-2xl font-semibold mb-4">{t('AccountPage.orderHistory')}</h2>
 
       {orders.length === 0 ? (
-        <p>You haven&apos;t placed any orders yet.</p>
+        <p>{t('AccountPage.noOrders')}.</p>
       ) : (
         <div className="space-y-6">
           {orders.map((order) => (
             <Card key={order.id}>
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
-                  <span>Order #{order.id}</span>
+                  <span>{t('OrderDetails.order')}{order.id}</span>
                   <span className="text-sm text-muted-foreground">
                     {new Date(order.order_date).toLocaleDateString()}
                   </span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="font-semibold mb-2">Products:</p>
+                <p className="font-semibold mb-2">{t('OrderDetails.products')}</p>
                 <ul className="space-y-2">
                   {order.orderItems.map((item) => (
                     <li key={item.id} className="flex justify-between items-center">
                       <span>{item.product.name}</span>
                       <Button asChild size="sm">
                         <a href={item.product.file_url} target="_blank" rel="noopener noreferrer">
-                          Download
+                          {t('OrderDetails.download')}
                         </a>
                       </Button>
                     </li>
                   ))}
                 </ul>
                 <p className="text-right mt-4 font-bold">
-                  Total: ${parseFloat(order.total_amount).toFixed(2)}
+                  {t('OrderDetails.total')} ${parseFloat(order.total_amount).toFixed(2)}
                 </p>
               </CardContent>
             </Card>

@@ -48,7 +48,7 @@ const t = useI18n()
                 <Link href="/login">{t('nav.login')}</Link>
               </Button>
               <Button asChild>
-                <Link href="/register">{t('nav.sign-up')}</Link>
+                <Link href="/register">{t('nav.signUp')}</Link>
               </Button>
               <LanguageSwitcher />
             </div>

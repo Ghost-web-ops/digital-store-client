@@ -82,7 +82,7 @@ export default function HomePage() {
               </p>
               {/* الخطوة 3: ربط الزر بالدالة */}
               <Button onClick={() => handleAddToCart(product)}>
-                Add to Cart
+                {t('home.addToCartButton')}
               </Button>
             </CardFooter>
           </Card>

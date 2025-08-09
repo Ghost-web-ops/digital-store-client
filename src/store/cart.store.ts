@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// تعريف شكل المنتج داخل السلة
 interface CartItem {
   id: number;
   name: string;
@@ -9,16 +8,17 @@ interface CartItem {
   quantity: number;
 }
 
-// تعريف شكل "المخزن" بالكامل
+// إضافة الوظائف الجديدة هنا
 interface CartState {
   items: CartItem[];
   addToCart: (product: { id: number; name: string; price: string }) => void;
   removeFromCart: (productId: number) => void;
+  increaseQuantity: (productId: number) => void; // <-- دالة الزيادة
+  decreaseQuantity: (productId: number) => void; // <-- دالة النقصان
   clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
-  // استخدام persist لحفظ السلة في localStorage
   persist(
     (set) => ({
       items: [],
@@ -26,7 +26,6 @@ export const useCartStore = create<CartState>()(
         set((state) => {
           const existingItem = state.items.find((item) => item.id === product.id);
           if (existingItem) {
-            // إذا كان المنتج موجودًا، قم بزيادة الكمية
             return {
               items: state.items.map((item) =>
                 item.id === product.id
@@ -35,7 +34,6 @@ export const useCartStore = create<CartState>()(
               ),
             };
           } else {
-            // إذا لم يكن موجودًا، أضفه للسلة بكمية 1
             return { items: [...state.items, { ...product, quantity: 1 }] };
           }
         }),
@@ -43,10 +41,33 @@ export const useCartStore = create<CartState>()(
         set((state) => ({
           items: state.items.filter((item) => item.id !== productId),
         })),
+      
+      // --- الكود الجديد هنا ---
+      increaseQuantity: (productId) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === productId
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+        })),
+
+      decreaseQuantity: (productId) =>
+        set((state) => ({
+          items: state.items
+            .map((item) =>
+              item.id === productId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
+            )
+            .filter((item) => item.quantity > 0), // حذف المنتج إذا كانت الكمية 0
+        })),
+      // --------------------
+
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'cart-storage', // اسم الحفظ في localStorage
+      name: 'cart-storage',
     }
   )
 );

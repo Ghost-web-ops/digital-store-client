@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useI18n } from '../../../locales/client';
+import { useI18n } from "../../../locales/client";
 
 export default function RegisterPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL; // تأكد من تعيين هذا المتغير في ملف .env.local
@@ -43,7 +43,7 @@ export default function RegisterPage() {
     e.preventDefault();
     try {
       // 👇 The fix is here 👇
-      const response = await axios.post(`${apiUrl}/api/register`, {
+      const response = await axios.post(`${apiUrl}/api/auth/register`, {
         username,
         email,
         password,
@@ -69,7 +69,7 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md flex dark:bg-gray-700 border-gray-600">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
-            create a new account{" "}
+            {t("Auth.registerTitle")}{" "}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -77,33 +77,33 @@ export default function RegisterPage() {
             {/* الخطوة 2: إضافة حقل اسم المستخدم */}
             <div>
               <Label htmlFor="username" className="mb-2">
-                Username{" "}
+                {t("Auth.usernameLabel")}{" "}
               </Label>
               <Input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 id="username"
                 type="text"
-                placeholder="Enter a username"
+                placeholder={t("Auth.usernamePlaceholder")}
                 required
               />
             </div>
             <div>
               <Label htmlFor="email" className="mb-2">
-                Email{" "}
+                {t("Auth.emailLabel")}{" "}
               </Label>
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t("Auth.emailPlaceholder")}
                 required
               />
             </div>
             <div>
               <Label htmlFor="password" className="mb-2">
-                Password
+                {t("Auth.passwordLabel")}{" "}
               </Label>
               <div className="relative">
                 <Input
@@ -111,14 +111,13 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={t("Auth.passwordPlaceholder")}
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)} // <-- تبديل حالة الإظهار
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-gray-500"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute inset-y-0 ltr:right-0 rtl:left-0 px-3 flex items-center text-slate-400 hover:text-slate-500"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -130,7 +129,9 @@ export default function RegisterPage() {
               disabled={isLoading}
               className="w-full  font-bold py-2 px-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Registering..." : "Register"}
+              {isLoading
+                ? t("Auth.registeringButton")
+                : t("Auth.registerButton")}
             </Button>
           </form>
           <div className="relative my-4">
@@ -139,7 +140,7 @@ export default function RegisterPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="px-2 bg-card text-muted-foreground dark:bg-gray-700">
-                Or continue with
+                {t("Auth.orContinueWith")}
               </span>
             </div>
           </div>
@@ -166,15 +167,15 @@ export default function RegisterPage() {
                 d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C42.012,35.846,44,30.138,44,24c0,22.659,43.862,21.35,43.611,20.083z"
               ></path>
             </svg>
-            Sign in with Google
+            {t("Auth.signInWithGoogle")}
           </a>
         </CardContent>
 
         <CardFooter>
           <p className="w-full text-center text-sm">
-            Already have an account?{" "}
+            {t("Auth.alreadyHaveAccount")}{" "}
             <Link href="/login" className="text-blue-500 hover:underline">
-              Login here
+              {t("Auth.loginHere")}
             </Link>
           </p>
         </CardFooter>

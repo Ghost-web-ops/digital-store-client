@@ -10,9 +10,11 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import toaster from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
+import { useI18n } from '../../../locales/client';
 
 export default function Login() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL; // تأكد من تعيين هذا المتغير في ملف .env.local
+  const t = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +22,7 @@ export default function Login() {
   const { login, isLoggedIn } = useAuth();
   useEffect(() => {
     if (isLoggedIn) {
-      router.push("/dashboard"); // أو الصفحة الرئيسية مثلاً
+      router.push("/"); // أو الصفحة الرئيسية مثلاً
     }
   }, [isLoggedIn, router]);
 
@@ -31,14 +33,14 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${apiUrl}/api/login`, {
+      const response = await axios.post(`${apiUrl}/api/auth/login`, {
         email,
         password,
       });
       login(response.data.token); // استدعاء دالة تسجيل الدخول من AuthContext
-      router.push("/dashboard"); // توجيه المستخدم للصفحة الرئيسية بعد تسجيل الدخول
+      router.push("/"); // توجيه المستخدم للصفحة الرئيسية بعد تسجيل الدخول
       toaster.success("Login successful!"); // عرض رسالة نجاح
-      console.log("Login successful:", response.data);
+      console.log("Login successful:");
       // هنا يمكنك إعادة توجيه المستخدم أو عرض رسالة نجاح
     } catch (error) {
       toaster.error("Login failed. Please check your credentials."); // عرض رسالة خطأ
@@ -52,27 +54,27 @@ export default function Login() {
       <Card className="w-full max-w-md ">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
-            Login{" "}
+            {t('Auth.loginTitle')}{" "}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email" className="mb-2">
-                Email
+                {t('Auth.emailLabel')}{" "}
               </Label>
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder={t('Auth.emailPlaceholder')}
                 required
               />
             </div>
             <div>
               <Label htmlFor="password" className="mb-2">
-                Password
+                {t('Auth.passwordLabel')}{" "}
               </Label>
               <div className="relative">
                 <Input
@@ -80,13 +82,13 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={t('Auth.passwordPlaceholder')}
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)} // <-- تبديل حالة الإظهار
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-gray-600"
+                  className="absolute inset-y-0 ltr:right-0 rtl:left-0 px-3 flex items-center text-slate-400 hover:text-slate-500"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -94,7 +96,7 @@ export default function Login() {
               </div>
             </div>
             <Button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-              Login
+              {t('Auth.loginTitle')}
             </Button>
           </form>
           <div className="relative my-4">
@@ -103,7 +105,7 @@ export default function Login() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="px-2 bg-card text-muted-foreground">
-                Or continue with
+                {t('Auth.orContinueWith')}
               </span>
             </div>
           </div>
@@ -130,13 +132,13 @@ export default function Login() {
                 d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C42.012,35.846,44,30.138,44,24c0,22.659,43.862,21.35,43.611,20.083z"
               ></path>
             </svg>
-            Sign in with Google
+            {t('Auth.signInWithGoogle')}
           </a>
         </CardContent>
         <p className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
+          {t('Auth.dontHaveAccount')}{" "}
           <Link href="/register" className="text-blue-500 hover:underline">
-            Register here
+            {t('Auth.registerHere')}
           </Link>
         </p>
       </Card>
