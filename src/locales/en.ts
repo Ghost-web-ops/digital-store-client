@@ -6,6 +6,9 @@ export default {
   nav: {
     login: "Login",
     signUp: "Sign Up",
+    myAccount: "My Account",
+    logout: "Logout",
+    cart: "Cart",
   },
   CartPage: {
     title: "Your Shopping Cart",

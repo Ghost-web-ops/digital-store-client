@@ -51,21 +51,21 @@ export default function HomePage() {
   };
 
   return (
-    <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">{t('home.title')} </h1>
+     <main className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">{t('home.title')} </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <Card key={product.id} className="flex flex-col">
             <CardHeader>
               {product.imageUrl && (
-                <div className="relative w-full h-48">
+                <div className="relative w-full aspect-square">
                   <Image
                     src={product.imageUrl}
                     alt={product.name}
                     layout="fill"
                     objectFit="cover"
-                    className="rounded-t-lg"
+                     className="object-cover rounded-t-lg"
                   />
                 </div>
               )}

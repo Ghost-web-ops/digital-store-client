@@ -6,6 +6,9 @@ export default {
   nav: {
     login: "التسجيل",
     signUp: "تسجيل الدخول",
+    myAccount: "حسابي",
+    logout: "تسجيل الخروج",
+    cart: "السلة",
   },
   CartPage: {
     title: "سلة التسوق الخاصة بك",

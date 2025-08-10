@@ -67,46 +67,65 @@ export default function AccountPage() {
   }
 
   return (
-    <main className="container mx-auto p-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-8">{t('AccountPage.title')}</h1>
-      <h2 className="text-2xl font-semibold mb-4">{t('AccountPage.orderHistory')}</h2>
+    <main className="container mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col items-center min-h-screen">
+  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-center">
+    {t('AccountPage.title')}
+  </h1>
 
-      {orders.length === 0 ? (
-        <p>{t('AccountPage.noOrders')}.</p>
-      ) : (
-        <div className="space-y-6">
-          {orders.map((order) => (
-            <Card key={order.id}>
-              <CardHeader>
-                <CardTitle className="flex justify-between items-center">
-                  <span>{t('OrderDetails.order')}{order.id}</span>
-                  <span className="text-sm text-muted-foreground">
-                    {new Date(order.order_date).toLocaleDateString()}
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="font-semibold mb-2">{t('OrderDetails.products')}</p>
-                <ul className="space-y-2">
-                  {order.orderItems.map((item) => (
-                    <li key={item.id} className="flex justify-between items-center">
-                      <span>{item.product.name}</span>
-                      <Button asChild size="sm">
-                        <a href={item.product.file_url} target="_blank" rel="noopener noreferrer">
-                          {t('OrderDetails.download')}
-                        </a>
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-                <p className="text-right mt-4 font-bold">
-                  {t('OrderDetails.total')} ${parseFloat(order.total_amount).toFixed(2)}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-    </main>
+  <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center">
+    {t('AccountPage.orderHistory')}
+  </h2>
+
+  {orders.length === 0 ? (
+    <p className="text-base sm:text-lg text-center">
+      {t('AccountPage.noOrders')}.
+    </p>
+  ) : (
+    <div className="w-full max-w-3xl space-y-4 sm:space-y-6">
+      {orders.map((order) => (
+        <Card key={order.id} className="w-full">
+          <CardHeader>
+            <CardTitle className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+              <span className="text-lg sm:text-xl">
+                {t('OrderDetails.order')}{order.id}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {new Date(order.order_date).toLocaleDateString()}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="font-semibold mb-2 text-base sm:text-lg">
+              {t('OrderDetails.products')}
+            </p>
+            <ul className="space-y-2 sm:space-y-3">
+              {order.orderItems.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+                >
+                  <span className="text-sm sm:text-base">{item.product.name}</span>
+                  <Button asChild size="sm" className="w-full sm:w-auto">
+                    <a
+                      href={item.product.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto text-center"
+                    >
+                      {t('OrderDetails.download')}
+                    </a>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+            <p className="text-right mt-4 font-bold text-base sm:text-lg">
+              {t('OrderDetails.total')} ${parseFloat(order.total_amount).toFixed(2)}
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )}
+</main>
   );
 }
