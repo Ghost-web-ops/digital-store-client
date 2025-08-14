@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
                 hostname: "images.unsplash.com",
                 port: "",
                 pathname: "/**",
-            }و
+            },
             {
         protocol: "https",
         hostname: "picsum.photos",
